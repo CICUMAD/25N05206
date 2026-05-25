@@ -1,1 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pantalla Segura — #25N #SinViolenciaDigital</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,sans-serif;background:#f5f5f5;color:#1a1a1a;min-height:100vh;padding:1rem}
+  .app{max-width:680px;margin:0 auto;padding:1.5rem 1rem}
+  .hero{text-align:center;padding:2rem 1rem 1.5rem;border-radius:12px;background:#fff;border:1px solid #e0e0e0;margin-bottom:1.5rem}
+  .badge{display:inline-block;font-size:12px;padding:4px 12px;border-radius:8px;background:#e6f1fb;color:#185FA5;margin-bottom:12px}
+  .hero h1{font-size:22px;font-weight:500;color:#1a1a1a;margin-bottom:8px}
+  .hero p{font-size:15px;color:#555;line-height:1.6}
+  .section-title{font-size:16px;font-weight:500;color:#1a1a1a;margin-bottom:1rem}
+  .question-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem 1.25rem;margin-bottom:10px}
+  .q-text{font-size:14px;color:#1a1a1a;margin-bottom:12px;line-height:1.6}
+  .q-options{display:flex;gap:8px}
+  .q-btn{flex:1;padding:8px 0;font-size:13px;border-radius:8px;border:1px solid #ccc;background:#f5f5f5;color:#555;cursor:pointer;transition:all .15s}
+  .q-btn:hover{background:#e8e8e8}
+  .q-btn.selected-yes{background:#639922;color:#fff;border-color:#3B6D11}
+  .q-btn.selected-no{background:#378ADD;color:#fff;border-color:#185FA5}
+  .semaforo{display:none;border-radius:12px;padding:1.5rem;text-align:center;margin-bottom:1.5rem;border:1px solid #ccc}
+  .semaforo.verde{background:#EAF3DE;border-color:#639922}
+  .semaforo.amarillo{background:#FAEEDA;border-color:#BA7517}
+  .semaforo.rojo{background:#FCEBEB;border-color:#A32D2D}
+  .semaforo-icon{font-size:40px;margin-bottom:12px}
+  .semaforo h2{font-size:18px;font-weight:500;margin-bottom:8px}
+  .semaforo.verde h2{color:#27500A}
+  .semaforo.amarillo h2{color:#633806}
+  .semaforo.rojo h2{color:#501313}
+  .semaforo p{font-size:14px;line-height:1.6}
+  .semaforo.verde p{color:#3B6D11}
+  .semaforo.amarillo p{color:#854F0B}
+  .semaforo.rojo p{color:#791F1F}
+  .calc-btn{width:100%;padding:10px;font-size:15px;border-radius:8px;border:1px solid #ccc;background:#f5f5f5;color:#1a1a1a;cursor:pointer;margin-top:8px;font-weight:500}
+  .calc-btn:hover{background:#e8e8e8}
+  .tabs{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+  .tab{padding:7px 14px;font-size:13px;border-radius:8px;border:1px solid #ddd;background:#f5f5f5;color:#555;cursor:pointer}
+  .tab.active{background:#534AB7;color:#fff;border-color:#3C3489}
+  .glosario-item{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem 1.25rem;margin-bottom:10px}
+  .glosario-term{font-size:14px;font-weight:500;color:#1a1a1a;margin-bottom:4px}
+  .glosario-def{font-size:13px;color:#555;line-height:1.6}
+  .glosario-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:8px;margin-top:6px}
+  .tag-ambos{background:#EEEDFE;color:#3C3489}
+  .tag-digital{background:#E6F1FB;color:#185FA5}
+  .recursos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+  .recurso-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:6px}
+  .recurso-icon{font-size:20px;color:#888}
+  .recurso-nombre{font-size:13px;font-weight:500;color:#1a1a1a}
+  .recurso-desc{font-size:12px;color:#555;line-height:1.5}
+  .recurso-link{font-size:12px;color:#185FA5;text-decoration:none;margin-top:auto}
+  .recurso-link:hover{text-decoration:underline}
+  .pasos-list{display:flex;flex-direction:column;gap:10px}
+  .paso{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem 1.25rem}
+  .paso-num{min-width:28px;height:28px;border-radius:50%;background:#EEEDFE;color:#3C3489;font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center}
+  .paso-text{font-size:13px;color:#555;line-height:1.6}
+  .paso-text strong{color:#1a1a1a;font-weight:500}
+  .hashtag-bar{text-align:center;padding:1rem;background:#fff;border-radius:8px;border:1px solid #e0e0e0;font-size:13px;color:#555;margin-top:1.5rem}
+  .hashtag-bar span{color:#534AB7;font-weight:500}
+  .content-section{display:none}
+  .content-section.active{display:block}
+  .section{margin-bottom:1.5rem}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="hero">
+    <div class="badge">#25N · #SinViolenciaDigital</div>
+    <h1>🛡️ Pantalla Segura</h1>
+    <p>La violencia digital no distingue género.<br>Identifícala, documéntala, repórtala.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('test', this)">🚦 Test rápido</button>
+    <button class="tab" onclick="showTab('glosario', this)">📖 Glosario</button>
+    <button class="tab" onclick="showTab('pasos', this)">✅ Qué hacer</button>
+    <button class="tab" onclick="showTab('recursos', this)">📞 Recursos</button>
+  </div>
+
+  <!-- TEST -->
+  <div id="test" class="content-section active">
+    <div class="section">
+      <p class="section-title">¿Estás viviendo violencia digital? Responde estas 8 preguntas:</p>
+
+      <div id="semaforo-result" class="semaforo"></div>
+
+      <div class="question-card">
+        <p class="q-text">1. ¿Alguien publica fotos, videos o información tuya en redes sin tu permiso?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,1,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,1,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">2. ¿Recibes mensajes amenazantes, insultos o burlas repetidas en redes o WhatsApp?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,2,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,2,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">3. ¿Alguien usa tus contraseñas o accede a tus cuentas sin tu permiso?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,3,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,3,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">4. ¿Han creado perfiles falsos haciéndose pasar por ti en redes sociales?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,4,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,4,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">5. ¿Alguien comparte o amenaza con compartir imágenes íntimas tuyas sin consentimiento?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,5,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,5,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">6. ¿Publican tu dirección, teléfono u otra info personal para que otros te ataquen?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,6,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,6,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">7. ¿Sientes miedo de usar tus redes o revisar tu celular por lo que podrías encontrar?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,7,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,7,0)">No</button>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="q-text">8. ¿Alguien te presiona, controla o vigila a través de dispositivos o redes sociales?</p>
+        <div class="q-options">
+          <button class="q-btn" onclick="answer(this,8,1)">Sí</button>
+          <button class="q-btn" onclick="answer(this,8,0)">No</button>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calcResult()">Ver mi resultado 🚦</button>
+    </div>
+  </div>
+
+  <!-- GLOSARIO -->
+  <div id="glosario" class="content-section">
+    <div class="section">
+      <p class="section-title">Tipos de violencia digital — aplican a cualquier persona</p>
+      <div class="glosario-item">
+        <p class="glosario-term">Ciberacoso (Cyberbullying)</p>
+        <p class="glosario-def">Hostigamiento, burlas o amenazas repetidas mediante mensajes, comentarios o publicaciones en redes. Afecta a hombres, mujeres y menores de edad.</p>
+        <span class="glosario-tag tag-ambos">Afecta a todos</span>
+      </div>
+      <div class="glosario-item">
+        <p class="glosario-term">Suplantación de identidad</p>
+        <p class="glosario-def">Crear perfiles falsos con el nombre, foto o datos de otra persona para dañar su reputación o cometer fraudes.</p>
+        <span class="glosario-tag tag-ambos">Afecta a todos</span>
+      </div>
+      <div class="glosario-item">
+        <p class="glosario-term">Doxing</p>
+        <p class="glosario-def">Publicar datos privados (domicilio, teléfono, trabajo) de alguien en internet para que otras personas lo ataquen.</p>
+        <span class="glosario-tag tag-digital">Delito digital</span>
+      </div>
+      <div class="glosario-item">
+        <p class="glosario-term">Sexting no consensuado (NCII)</p>
+        <p class="glosario-def">Difundir imágenes o videos íntimos de una persona sin su consentimiento. En México es delito en varios estados.</p>
+        <span class="glosario-tag tag-digital">Delito digital</span>
+      </div>
+      <div class="glosario-item">
+        <p class="glosario-term">Control y vigilancia digital</p>
+        <p class="glosario-def">Revisar cuentas, instalar spyware, exigir contraseñas o monitorear ubicación de forma coercitiva. Forma de violencia en la pareja.</p>
+        <span class="glosario-tag tag-ambos">Afecta a todos</span>
+      </div>
+      <div class="glosario-item">
+        <p class="glosario-term">Violencia algorítmica</p>
+        <p class="glosario-def">Cuando plataformas amplifican contenido que daña la reputación de una persona (fotos, rumores, ataques coordinados).</p>
+        <span class="glosario-tag tag-digital">Delito digital</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUÉ HACER -->
+  <div id="pasos" class="content-section">
+    <div class="section">
+      <p class="section-title">Qué hacer si estás viviendo violencia digital</p>
+      <div class="pasos-list">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-text"><strong>No borres nada todavía.</strong> Guarda capturas de pantalla de mensajes, publicaciones y perfiles. Incluye fecha, hora y nombre del agresor.</div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-text"><strong>Reporta en la plataforma.</strong> Facebook, Instagram, X (Twitter), TikTok y WhatsApp tienen botones de reporte. Hazlo antes de bloquear para que quede registrado.</div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-text"><strong>Bloquea al agresor</strong> en todas tus redes y cambia tus contraseñas inmediatamente si crees que accedieron a tus cuentas. Activa la verificación en dos pasos.</div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-text"><strong>Denuncia ante la FGR.</strong> Ve a la Fiscalía General de la República o a la policía cibernética de tu estado. Lleva tus evidencias (capturas de pantalla).</div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">5</div>
+          <div class="paso-text"><strong>Busca apoyo.</strong> No estás solo/a. Habla con alguien de confianza o contacta una línea de apoyo especializada. La violencia digital tiene impacto emocional real.</div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">6</div>
+          <div class="paso-text"><strong>Solicita la eliminación de contenido.</strong> Si se difunden imágenes íntimas, plataformas como Meta y Google tienen formularios especiales para retirarlas urgentemente.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECURSOS -->
+  <div id="recursos" class="content-section">
+    <div class="section">
+      <p class="section-title">Dónde pedir ayuda en México</p>
+      <div class="recursos-grid">
+        <div class="recurso-card">
+          <i class="ti ti-shield-check recurso-icon"></i>
+          <p class="recurso-nombre">FGR Ciberdelitos</p>
+          <p class="recurso-desc">Denuncia delitos digitales ante la Fiscalía General de la República.</p>
+          <a class="recurso-link" href="https://www.gob.mx/fgr" target="_blank">gob.mx/fgr →</a>
+        </div>
+        <div class="recurso-card">
+          <i class="ti ti-phone recurso-icon"></i>
+          <p class="recurso-nombre">CONAVIM</p>
+          <p class="recurso-desc">Comisión Nacional para Prevenir y Erradicar la Violencia. Línea 800 890 0024.</p>
+          <a class="recurso-link" href="https://www.gob.mx/conavim" target="_blank">gob.mx/conavim →</a>
+        </div>
+        <div class="recurso-card">
+          <i class="ti ti-device-mobile recurso-icon"></i>
+          <p class="recurso-nombre">Policía Cibernética</p>
+          <p class="recurso-desc">SSP de cada estado. En CDMX: 55 5242-6290. Atienden denuncias 24/7.</p>
+          <a class="recurso-link" href="https://www.ssc.cdmx.gob.mx" target="_blank">ssc.cdmx.gob.mx →</a>
+        </div>
+        <div class="recurso-card">
+          <i class="ti ti-heart recurso-icon"></i>
+          <p class="recurso-nombre">SAPTEL</p>
+          <p class="recurso-desc">Crisis emocional las 24 horas. Tel: 55 5259-8121. Apoyo psicológico gratuito.</p>
+          <a class="recurso-link" href="https://www.saptel.org.mx" target="_blank">saptel.org.mx →</a>
+        </div>
+        <div class="recurso-card">
+          <i class="ti ti-world recurso-icon"></i>
+          <p class="recurso-nombre">SeguridadDigital.mx</p>
+          <p class="recurso-desc">Guías y recursos para proteger tu vida digital. Proyecto de R3D.</p>
+          <a class="recurso-link" href="https://r3d.mx" target="_blank">r3d.mx →</a>
+        </div>
+        <div class="recurso-card">
+          <i class="ti ti-trash recurso-icon"></i>
+          <p class="recurso-nombre">Meta / Google — NCII</p>
+          <p class="recurso-desc">Formularios para eliminar imágenes íntimas sin consentimiento de forma urgente.</p>
+          <a class="recurso-link" href="https://stopncii.org" target="_blank">stopncii.org →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hashtag-bar">
+    <span>#25N</span> · <span>#SinViolenciaDigital</span> · <span>#PantallaSegura</span><br>
+    La violencia digital es real. Afecta a todos. No estás solo/a.
+  </div>
+
+</div>
+
+<script>
+const answers = {};
+
+function answer(btn, q, val) {
+  answers[q] = val;
+  const parent = btn.parentElement;
+  const btns = parent.querySelectorAll('.q-btn');
+  btns.forEach(b => b.classList.remove('selected-yes','selected-no'));
+  if(val === 1){
+    btn.classList.add('selected-yes');
+  } else {
+    btn.classList.add('selected-no');
+  }
+}
+
+function calcResult(){
+  const total = Object.keys(answers).length;
+  if(total < 8){
+    alert('Por favor responde todas las preguntas antes de ver tu resultado.');
+    return;
+  }
+  const yesCount = Object.values(answers).reduce((a,b)=>a+b,0);
+  const el = document.getElementById('semaforo-result');
+  el.style.display = 'block';
+  if(yesCount === 0){
+    el.className = 'semaforo verde';
+    el.innerHTML = '<div class="semaforo-icon">🟢</div><h2>Sin señales de violencia digital</h2><p>Por ahora no identificamos señales de riesgo. Mantén protegidas tus contraseñas y ajusta la privacidad de tus redes sociales periódicamente.</p>';
+  } else if(yesCount <= 2){
+    el.className = 'semaforo amarillo';
+    el.innerHTML = '<div class="semaforo-icon">🟡</div><h2>Alerta — hay situaciones a atender</h2><p>Detectamos algunas señales. Guarda evidencias, revisa la configuración de privacidad de tus cuentas y consulta la pestaña "Qué hacer" para los siguientes pasos.</p>';
+  } else {
+    el.className = 'semaforo rojo';
+    el.innerHTML = '<div class="semaforo-icon">🔴</div><h2>Violencia digital activa — actúa ahora</h2><p>Estás viviendo violencia digital. No es tu culpa. Guarda evidencias, denuncia ante la FGR o policía cibernética y busca apoyo emocional. Revisa la pestaña "Recursos" para contactos de ayuda inmediata.</p>';
+  }
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function showTab(name, btn){
+  document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
 
